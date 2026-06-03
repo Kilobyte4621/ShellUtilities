@@ -1,5 +1,5 @@
-# Version Details: v0.4
-# Modular, DRY, and recursive shell loader setup with .scriptignore support
+# Version Details: v0.4.1
+# Modular, DRY, and recursive shell loader setup with FIXED .scriptignore support
 add2bash() {
   local bashrc="$HOME/.bashrc"
   local cwd="$PWD"
@@ -53,7 +53,6 @@ EOF
   # CASO 2: Sem argumentos (Rota da Opção B - Recursivo com Loader Central + Ignore)
   
   # 2.1. Criação/Atualização do Loader Central (load_all.sh)
-  # Nota: Removemos o 'if' que impedia a recriação para garantir que, se atualizarmos a lógica do loader, ele reescreva o arquivo com a versão nova.
   echo "Generating/Updating central loader script at: $loader_file"
   cat << 'EOF' > "$loader_file"
 #!/usr/bin/env bash
@@ -73,7 +72,7 @@ if [[ -f "$IGNORE_FILE" && -r "$IGNORE_FILE" ]]; then
     if [[ -n "$line" && ! "$line" =~ ^# ]]; then
       IGNORE_PATTERNS+=("$line")
     fi
-  done < "$IGNORE_FILE"  # <-- A CORREÇÃO ESTÁ AQUI (era 'fi < ...', o certo é 'done < ...')
+  done < "$IGNORE_FILE"
 fi
 
 # Busca todos os arquivos .sh recursivamente

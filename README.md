@@ -39,36 +39,22 @@ This repository resolves these problems with zero external dependencies, emphasi
 
 #### 🔹 Operational Frameworks
 
-* 
-**Mode A: Raw Text/Alias Appendment (Arguments Passed):** When executed with strings (e.g., `add2bash "alias k='kubectl'"`), the utility acts as a verified appender. It abstracts the process of echo injections, preventing malformed strings from ruining your configurations.
+* **Mode A: Raw Text/Alias Appendment (Arguments Passed):** When executed with strings (e.g., `add2bash "alias k='kubectl'"`), the utility acts as a verified appender. It abstracts the process of echo injections, preventing malformed strings from ruining your configurations.
 
-
-* 
-**Mode B: Recursive Central Loader Bootstrapping (No Arguments):** When run standalone inside a directory containing shell scripts, it automatically compiles an isolated, executable script called `load_all.sh`. It then updates your system's `~/.bashrc` to source only this specific loader file exactly once.
-
+* **Mode B: Recursive Central Loader Bootstrapping (No Arguments):** When run standalone inside a directory containing shell scripts, it automatically compiles an isolated, executable script called `load_all.sh`. It then updates your system's `~/.bashrc` to source only this specific loader file exactly once.
 
 
 #### 🔹 Technical Implementation Details
 
-* 
-**Deterministic Tracking & Idempotency:** The utility computes a dynamic target header tag signature: `# [add2bash] Central Loader for <Target_Path>`. Before running any write process, it runs a quiet structural lookup utilizing `grep -Fq`. If the sequence is found, it terminates early to avoid duplicate initialization paths.
+* **Deterministic Tracking & Idempotency:** The utility computes a dynamic target header tag signature: `# [add2bash] Central Loader for <Target_Path>`. Before running any write process, it runs a quiet structural lookup utilizing `grep -Fq`. If the sequence is found, it terminates early to avoid duplicate initialization paths.
 
+* **Dynamic Sourcing Tree (`load_all.sh`):** The output module is pre-coded to query real-time execution locations dynamically via `readlink -f` combined with `$BASH_SOURCE` context mapping. It discovers all `.sh` extensions downward through a memory-safe `find` execution using null-byte line terminations (`-print0`) to avoid token-splitting issues on spaced filenames.
 
-* 
-**Dynamic Sourcing Tree (`load_all.sh`):** The output module is pre-coded to query real-time execution locations dynamically via `readlink -f` combined with `$BASH_SOURCE` context mapping. It discovers all `.sh` extensions downward through a memory-safe `find` execution using null-byte line terminations (`-print0`) to avoid token-splitting issues on spaced filenames.
+* **Advanced Cross-Platform `.scriptignore` Parser:** The generated loader reads matching ignore files line-by-line (`IFS= read -r line`). It strips raw Windows carriage returns (`\r`) automatically using `tr -d` and eliminates trailing shell whitespaces via `xargs`. This ensures your rules work flawlessly even if patterns are composed or edited on Windows platforms (CRLF line-ending format).
 
+* **Infinite Execution-Loop Hardening:** Inside its runtime compilation shell loop, `add2bash` maps the filename variable against its own system runtime identity array (`$BASH_SOURCE`). If a match occurs, or if files lack explicit readable permissions (`! -r`), it triggers a shortcut `continue` instruction, ensuring the loader never tries to context-source itself recursively.
 
-* 
-**Advanced Cross-Platform `.scriptignore` Parser:** The generated loader reads matching ignore files line-by-line (`IFS= read -r line`). It strips raw Windows carriage returns (`\r`) automatically using `tr -d` and eliminates trailing shell whitespaces via `xargs`. This ensures your rules work flawlessly even if patterns are composed or edited on Windows platforms (CRLF line-ending format).
-
-
-* 
-**Infinite Execution-Loop Hardening:** Inside its runtime compilation shell loop, `add2bash` maps the filename variable against its own system runtime identity array (`$BASH_SOURCE`). If a match occurs, or if files lack explicit readable permissions (`! -r`), it triggers a shortcut `continue` instruction, ensuring the loader never tries to context-source itself recursively.
-
-
-* 
-**Interactive Approvals:** Destructive actions or files containing changes intended for target setup arrays are strictly halted beforehand by an internal validation function (`confirm_action`), waiting for a positive `[y/Y]` manual user interaction.
-
+* **Interactive Approvals:** Destructive actions or files containing changes intended for target setup arrays are strictly halted beforehand by an internal validation function (`confirm_action`), waiting for a positive `[y/Y]` manual user interaction.
 
 
 ---
@@ -91,12 +77,10 @@ This repository resolves these problems with zero external dependencies, emphasi
 * **Zero Match Error Safeguard:** Standard directory loops fail or display system warnings if shell wildcards come up empty. `sh2txt` uses structural evaluation bounds (`[ -f "$f" ] || continue`) to safely bypass processing if no `.sh` files exist in the folder.
 
 
-* 
-**Native String Parameter Expansion:** Instead of spawning system overhead processes like `sed` or `awk` to change the filename extension, the code handles renames using native shell parameter expansion: `${f%.sh}.txt`. This isolates the trailing suffix, cleanly transforming `script.sh` into `script.txt`.
+* **Native String Parameter Expansion:** Instead of spawning system overhead processes like `sed` or `awk` to change the filename extension, the code handles renames using native shell parameter expansion: `${f%.sh}.txt`. This isolates the trailing suffix, cleanly transforming `script.sh` into `script.txt`.
 
 
-* 
-**Built-in Scalability (Recursive Blueprint):** The tool includes a pre-built, alternative architecture commented out in the code. By toggling the comments, users can replace the single-tier directory loop with an advanced, multi-tier recursive engine powered by `find -exec sh -c 'for f; do cp -- "$f" "${f%.sh}.txt"; done' sh {} +`. This processes deeply nested scripts within an optimized subshell execution pattern.
+* **Built-in Scalability (Recursive Blueprint):** The tool includes a pre-built, alternative architecture commented out in the code. By toggling the comments, users can replace the single-tier directory loop with an advanced, multi-tier recursive engine powered by `find -exec sh -c 'for f; do cp -- "$f" "${f%.sh}.txt"; done' sh {} +`. This processes deeply nested scripts within an optimized subshell execution pattern.
 
 
 
@@ -109,7 +93,7 @@ This repository resolves these problems with zero external dependencies, emphasi
 Download the script files into your chosen automation or local development path:
 
 ```bash
-git clone https://github.com/your-username/shell-utilities.git
+git clone https://github.com/Kilobyte4621/ShellUtilities.git
 cd shell-utilities
 
 ```
@@ -143,8 +127,7 @@ add2bash
 
 **What Happens Behind the Scenes:**
 
-1. 
-`add2bash` recognizes that no extra text arguments were passed.
+1. `add2bash` recognizes that no extra text arguments were passed.
 
 
 2. It compiles a highly stable `load_all.sh` utility within that directory.

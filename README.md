@@ -94,7 +94,7 @@ Download the script files into your chosen automation or local development path:
 
 ```bash
 git clone https://github.com/Kilobyte4621/ShellUtilities.git
-cd shell-utilities
+cd ShellUtilities
 
 ```
 

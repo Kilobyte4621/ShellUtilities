@@ -1,5 +1,5 @@
 # Version Details: v0.2
-# Modular script to safely add a central recursive loader or custom text to .bashrc
+# Modular, DRY, and recursive shell loader setup for .bashrc
 add2bash() {
   local bashrc="$HOME/.bashrc"
   local cwd="$PWD"
@@ -7,7 +7,7 @@ add2bash() {
   local text=""
   local marker="# [add2bash] Central Loader for $cwd"
 
-  # Função interna para centralizar a confirmação (Evita repetição de código)
+  # [DRY] Função interna para centralizar a confirmação do usuário
   confirm_action() {
     local prompt_msg="$1"
     local reply
@@ -18,12 +18,20 @@ add2bash() {
     esac
   }
 
+  # [DRY] Função interna para checar idempotência (evitar duplicados)
+  is_already_added() {
+    local search_text="$1"
+    local target_file="$2"
+    # Retorna 0 se achar, 1 se não achar
+    grep -Fq "$search_text" "$target_file" 2>/dev/null
+  }
+
   # CASO 1: Usuário passou um argumento (texto personalizado)
   if [[ -n "$1" ]]; then
     text="$1"
 
-    # Idempotência: Verifica se o texto exato já existe no .bashrc
-    if grep -Fq "$text" "$bashrc" 2>/dev/null; then
+    # Usando a nova função DRY de idempotência
+    if is_already_added "$text" "$bashrc"; then
       echo "Info: This exact text already exists in $bashrc. Skipping."
       return 0
     fi
@@ -45,9 +53,8 @@ EOF
   fi
 
   # CASO 2: Sem argumentos (Rota da Opção B - Recursivo com Loader Central)
-
+  
   # 2.1. Criação/Validação do Loader Central (load_all.sh)
-  # Usamos o 'find' para buscar recursivamente, garantindo que é um arquivo regular (-f) e que não tentará carregar a si mesmo
   if [[ ! -f "$loader_file" ]]; then
     echo "Creating central loader script at: $loader_file"
     cat << 'EOF' > "$loader_file"
@@ -64,7 +71,6 @@ while IFS= read -r -d '' f; do
   fi
 done < <(find "$CURRENT_DIR" -type f -name "*.sh" -print0)
 EOF
-    # Dá permissão de execução ao loader
     chmod +x "$loader_file"
   else
     echo "Info: Central loader already exists at $loader_file"
@@ -79,8 +85,8 @@ fi
 EOF
 )
 
-  # Idempotência: Verifica se o nosso marcador único já existe no .bashrc
-  if grep -Fq "$marker" "$bashrc" 2>/dev/null; then
+  # Usando a nova função DRY de idempotência aqui também!
+  if is_already_added "$marker" "$bashrc"; then
     echo "Info: This directory loader is already configured in $bashrc. Nothing to do."
     return 0
   fi
@@ -105,10 +111,7 @@ EOF
   fi
 }
 
-# DETECÇÃO INTELIGENTE: Executar ou apenas carregar na memória?
-# Se o script está sendo executado diretamente, '$0' será o nome do script (ex: ./add2bash.sh)
-# Se está sendo importado via 'source', '$0' será o próprio bash (/bin/bash)
+# DETECÇÃO INTELIGENTE: Executar se chamado direto, ou apenas carregar se via source
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    # Executa a função passando os argumentos do terminal
     add2bash "$@"
 fi

@@ -73,7 +73,7 @@ if [[ -f "$IGNORE_FILE" && -r "$IGNORE_FILE" ]]; then
     if [[ -n "$line" && ! "$line" =~ ^# ]]; then
       IGNORE_PATTERNS+=("$line")
     fi
-  fi < "$IGNORE_FILE"
+  done < "$IGNORE_FILE"  # <-- A CORREÇÃO ESTÁ AQUI (era 'fi < ...', o certo é 'done < ...')
 fi
 
 # Busca todos os arquivos .sh recursivamente

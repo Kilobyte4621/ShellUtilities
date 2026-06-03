@@ -77,8 +77,8 @@ Download the script files into your chosen automation or local development path:
 
 ```bash
 mkdir -p ~/scripts && cd ~/scripts 
-git clone https://github.com/Kilobyte4621/ShellUtilities.git
-cd ShellUtilities
+git clone https://github.com/Kilobyte4621/shellutilities.git
+cd shellutilities
 
 ```
 
@@ -115,7 +115,7 @@ If you skipped **Step 2** of the Quick Start and want to trigger the utility wit
 
 ```bash
 # Alternate 2: Source the container directly to call the function instantly
-source ~/scripts/ShellUtilities/add2bash.txt && add2bash
+source ~/scripts/shellutilities/add2bash.txt && add2bash
 
 ```
 

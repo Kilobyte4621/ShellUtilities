@@ -81,7 +81,7 @@ while IFS= read -r -d '' f; do
     continue
   fi
 
-  # Caminho relativo a partir da raiz da pasta de scripts (ex: ArchivePar2/script.sh)
+  # Caminho relativo a partir da raiz da pasta de scripts (ex: Example2/script.sh)
   RELATIVE_PATH="${f#$CURRENT_DIR/}"
 
   # 2. Verifica as regras do .scriptignore

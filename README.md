@@ -115,7 +115,7 @@ If you skipped **Step 2** of the Quick Start and want to trigger the utility wit
 
 ```bash
 # Alternate 2: Source the container directly to call the function instantly
-source ~/scripts/shellutilities/add2bash.txt && add2bash
+source ~/scripts/shellutilities/add2bash.sh && add2bash
 
 ```
 

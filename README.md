@@ -87,8 +87,8 @@ cd shellutilities
 Because these utilities are written as lightweight shell functions rather than standalone binaries, they must be sourced directly into your active session environment to be registered:
 
 ```bash
-source add2bash.txt
-source sh2txt.txt
+source add2bash.sh
+source sh2txt.sh
 
 ```
 

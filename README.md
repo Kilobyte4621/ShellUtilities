@@ -98,13 +98,13 @@ source sh2txt.txt
 
 ### Scenario A: Bootstrapping a Recursive Config Toolkit
 
-Imagine you have a custom toolkit folder located at `~/workspace/dev-toolkit/` containing multiple separate shell files (`aliases.sh`, `docker-helpers.sh`, `git-hacks.sh`). These scripts can be organized into subfolders, mixed structures, or completely different cloned git repositories. Because `load_all.sh` runs recursively down your directory tree, everything gets gathered dynamically.
+Imagine you have a custom toolkit folder located at `~/scripts/` containing multiple separate shell files (`aliases.sh`, `docker-helpers.sh`, `git-hacks.sh`). These scripts can be organized into subfolders, mixed structures, or completely different cloned git repositories. Because `load_all.sh` runs recursively down your directory tree, everything gets gathered dynamically.
 
 Instead of manual indexing inside your main profile, execute `add2bash` directly:
 
 ```bash
 # 1. Navigate to your custom automation directory
-cd ~/workspace/dev-toolkit/
+cd ~/scripts/
 
 # 2. Fire up the automatic generator
 add2bash

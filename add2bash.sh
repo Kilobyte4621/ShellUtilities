@@ -1,4 +1,4 @@
-# Version Details: v0.2
+# Version Details: v0.3
 # Modular, DRY, and recursive shell loader setup for .bashrc
 add2bash() {
   local bashrc="$HOME/.bashrc"
